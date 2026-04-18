@@ -1,0 +1,12 @@
+# MkDocs build output
+site/
+
+# Python 仮想環境
+.venv/
+
+
+# macOS
+.DS_Store
+
+# 論文・テキストPDF（各マシンで個別に管理）
+pdfs/

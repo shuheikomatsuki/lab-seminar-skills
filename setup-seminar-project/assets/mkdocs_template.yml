@@ -1,0 +1,66 @@
+site_name: {{SITE_NAME}}
+site_description: {{SITE_DESC}}
+site_author: Lab Members
+
+theme:
+  name: material
+  language: ja
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+
+# CI生成ファイル (slides.html, slides.pdf, *.png) へのリンクは
+# ローカルでは存在しないため警告を抑制する
+validation:
+  links:
+    absolute_links: warn
+    unrecognized_links: ignore
+    anchors: warn
+  nav:
+    omitted_files: ignore
+
+# Marpのソースファイルはnavに含めない
+not_in_nav: |
+  sessions/**/slides.md
+
+plugins:
+  - search:
+      lang: ja
+
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - ホーム: index.md
+  - セッション: []
