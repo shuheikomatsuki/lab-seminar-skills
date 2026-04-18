@@ -91,13 +91,27 @@ cp -r /tmp/lab-seminar-skills/setup-seminar-project .claude/skills/
 ### セッションの追加
 
 ```
-/add-seminar-session <slug> <pdf-path> [display-title] [YYYY-MM-DD]
+/add-seminar-session [slug] <pdf-path> [display-title] [YYYY-MM-DD]
 ```
+
+`slug` は省略可能です。省略時は PDF ファイル名から自動生成されます。
+`date` は `seminar_config.yml` の `next_seminar_date` があればそちらを使います。
 
 例:
 
 ```
+# slug あり
 /add-seminar-session dl-ch6-1 pdfs/deeplearning-ch6.pdf "DL Ch6.1 固定基底関数の限界"
+
+# slug 省略（PDFファイル名から自動生成）
+/add-seminar-session pdfs/deeplearning-ch6.pdf "DL Ch6.1 固定基底関数の限界"
+```
+
+**設定ファイル（任意）:** プロジェクトルートに `seminar_config.yml` を置くと、開催日・発表者名のデフォルト値を設定できます。
+
+```yaml
+next_seminar_date: 2026-04-25   # date引数省略時に使用
+default_presenter: 山田太郎     # 担当:欄に自動挿入
 ```
 
 生成物:
