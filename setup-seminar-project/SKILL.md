@@ -80,7 +80,7 @@ mkdir -p "$PROJECT_DIR/.claude/skills"
 ```bash
 cd "$PROJECT_DIR"
 git init
-git submodule add https://github.com/komashuhei/lab-seminar-skills .claude/skills
+git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .claude/skills
 ```
 
 コマンドが失敗した場合は以下を出力してスキップする：
@@ -88,9 +88,9 @@ git submodule add https://github.com/komashuhei/lab-seminar-skills .claude/skill
 ```
 ⚠️  git submodule の登録をスキップしました。
 手動で以下を実行してスキルを導入してください:
-  git submodule add https://github.com/komashuhei/lab-seminar-skills .claude/skills
+  git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .claude/skills
 または（git を使わない場合）:
-  git clone https://github.com/komashuhei/lab-seminar-skills .claude/skills
+  git clone https://github.com/shuheikomatsuki/lab-seminar-skills .claude/skills
 ```
 
 ## Step 8: uv sync を実行する
