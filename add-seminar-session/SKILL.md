@@ -1,7 +1,7 @@
 ---
 name: add-seminar-session
 description: Use this skill to add a new seminar session to the lab-seminars repository. Trigger when the user wants to create a new session from a PDF, paper, or textbook chapter, invokes /add-seminar-session, mentions adding a 勉強会セッション or 輪講, or wants to generate まとめ記事 and スライド from a source document.
-argument-hint: [slug] <pdf-path> [display-title] [YYYY-MM-DD]
+argument-hint: "[slug] <pdf-path> [display-title] [YYYY-MM-DD]"
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 ---
 
