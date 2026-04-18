@@ -20,14 +20,14 @@ git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .claude/
 ### Codex
 
 ```bash
-git submodule add https://github.com/komashuhei/lab-seminar-skills .codex/skills
+git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .codex/skills
 ```
 
 ### 両方使う場合
 
 ```bash
 git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .claude/skills
-git submodule add https://github.com/komashuhei/lab-seminar-skills .codex/skills
+git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .codex/skills
 ```
 
 ### サブモジュールの更新
