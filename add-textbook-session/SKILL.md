@@ -107,6 +107,10 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
 
 Marp形式のスライド（全体10〜15枚程度）。節全体をカバーし、各サブサブセクションを1〜3枚にまとめる。
 
+**スライド密度ガイドライン**:
+- 大きな display math（シグマ記号・分数・多段添字を含む `$$...$$`）が2つ以上あるスライドには、4行以上の表を置かない
+- 表が必要な場合は次のスライドに分ける、表を3行以内に収める、またはシンボル説明をインライン（`$記号$: 意味, ...` 形式）にまとめる
+
 **テンプレート**: `.claude/skills/add-textbook-session/assets/slides_template.md` を Read し、frontmatter・構成を確認してから生成する。
 
 **発表者の挿入**: `config_presenter` が設定されている場合、`（担当者名）` プレースホルダーを `config_presenter` の値で置き換える。

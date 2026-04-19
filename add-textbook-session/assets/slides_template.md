@@ -5,6 +5,16 @@ paginate: true
 math: katex
 header: "研究室勉強会 <!-- YYYY-MM-DD -->"
 footer: "<!-- 著者略称, 書籍/論文名 §節番号 -->"
+style: |
+  section {
+    font-size: 24px;
+  }
+  section h1 {
+    font-size: 44px;
+  }
+  section h2 {
+    font-size: 32px;
+  }
 ---
 
 # <!-- タイトル（例: 6.2 正則化） -->

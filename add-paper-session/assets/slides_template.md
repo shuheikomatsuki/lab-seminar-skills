@@ -5,6 +5,16 @@ paginate: true
 math: katex
 header: "研究室勉強会 <!-- YYYY-MM-DD -->"
 footer: "<!-- 筆頭著者略称 et al., 会議名 年（例: Vaswani et al., NeurIPS 2017）-->"
+style: |
+  section {
+    font-size: 24px;
+  }
+  section h1 {
+    font-size: 44px;
+  }
+  section h2 {
+    font-size: 32px;
+  }
 ---
 
 # <!-- 論文タイトル -->
