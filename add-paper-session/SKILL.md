@@ -1,11 +1,11 @@
 ---
-name: add-seminar-paper
-description: Use this skill to add a new paper introduction session to the lab-seminars repository. Trigger when the user wants to create a new session from a research paper PDF, invokes /add-seminar-paper, mentions adding a 論文紹介 or 論文セッション, or wants to generate まとめ記事 and スライド from a research paper.
+name: add-paper-session
+description: Use this skill to add a new paper introduction session to the lab-seminars repository. Trigger when the user wants to create a new session from a research paper PDF, invokes /add-paper-session, mentions adding a 論文紹介 or 論文セッション, or wants to generate まとめ記事 and スライド from a research paper.
 argument-hint: "[slug] <pdf-path> [display-title] [YYYY-MM-DD]"
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 ---
 
-# add-seminar-paper
+# add-paper-session
 
 論文PDFから論文紹介セッションを新規追加します。解説記事・Marpスライド・Mermaid図を生成し、サイトのナビゲーションも自動更新します。
 
@@ -74,7 +74,7 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
 
 **目標**: 論文を読んでいない人でも手法・実験・貢献を理解できる、自己完結した解説記事。
 
-**テンプレート**: まず `.claude/skills/add-seminar-paper/assets/index_template.md` を Read し、構造を把握してから生成する。各 `<!-- ... -->` プレースホルダーをPDFから読み取った実際の内容で置き換える。
+**テンプレート**: まず `.claude/skills/add-paper-session/assets/index_template.md` を Read し、構造を把握してから生成する。各 `<!-- ... -->` プレースホルダーをPDFから読み取った実際の内容で置き換える。
 
 **発表者の挿入**: `config_presenter` が設定されている場合、`（担当者名）` プレースホルダーを `config_presenter` の値で置き換える。未設定の場合は `（担当者名）` のままにする。
 
@@ -93,7 +93,7 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
 
 Marp形式のスライド（全体10〜15枚程度）。
 
-**テンプレート**: `.claude/skills/add-seminar-paper/assets/slides_template.md` を Read し、frontmatter・構成を確認してから生成する。
+**テンプレート**: `.claude/skills/add-paper-session/assets/slides_template.md` を Read し、frontmatter・構成を確認してから生成する。
 
 **発表者の挿入**: `config_presenter` が設定されている場合、`（担当者名）` プレースホルダーを `config_presenter` の値で置き換える。
 
