@@ -9,7 +9,6 @@
 ## スライド
 
 - [スライド (HTML)](slides.html)
-- [スライド (PDF)](slides.pdf)
 
 ---
 
