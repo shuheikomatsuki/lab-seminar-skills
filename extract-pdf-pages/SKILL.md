@@ -133,7 +133,7 @@ Error: ソースPDFが見つかりません: <SOURCE_PATH>
 `INPUT_MODE == "section"` の場合のみ実行する。
 
 ```bash
-uv run --with pypdf "$SKILL_SOURCE_DIR/assets/resolve_section_pages.py" \
+uv run --with pypdf "$SKILL_SOURCE_DIR/scripts/resolve_section_pages.py" \
   "<SOURCE_PATH>" "<SECTION_NUM>"
 ```
 
@@ -171,7 +171,7 @@ mkdir -p "<OUTPUT_DIR>"
 ## Step 4: ページ抽出の実行
 
 ```bash
-uv run --with pypdf "$SKILL_SOURCE_DIR/assets/extract_pages.py" \
+uv run --with pypdf "$SKILL_SOURCE_DIR/scripts/extract_pages.py" \
   "<SOURCE_PATH>" "<PAGES_STR>" "<OUTPUT_PATH>"
 ```
 
