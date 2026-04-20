@@ -1,7 +1,7 @@
 ---
 name: extract-pdf-pages
 description: Use this skill to extract a range of pages from a source PDF and save them as a new PDF. Trigger when the user invokes /extract-pdf-pages, wants to clip pages from a textbook or paper PDF, or needs to prepare a partial PDF before running /add-textbook-session.
-argument-hint: "<pdf-key-or-path> <pages> [output-filename] [--output-dir <dir>]"
+argument-hint: "<pdf-key-or-path> <pages-or-section> [output-filename] [--output-dir <dir>]"
 allowed-tools: [Read, Bash, Glob]
 ---
 
@@ -14,24 +14,32 @@ allowed-tools: [Read, Bash, Glob]
 ## 引数
 
 ```
-<pdf-key-or-path> <pages> [output-filename] [--output-dir <dir>]
+<pdf-key-or-path> <pages-or-section> [output-filename] [--output-dir <dir>]
 ```
 
 - `pdf-key-or-path` (必須): `pdf_sources` のキー（例: `dl-book`）または絶対パス
   - **判定**: `/` を含む、または `.pdf` で終わる → パスとみなす。それ以外 → キーとみなす
-- `pages` (必須): 1-indexed のページ指定
-  - 単ページ: `5`
-  - 範囲: `10-25`
-  - カンマ区切り: `10,12,15`
-  - 混合: `10-15,20-25`
+- `pages-or-section` (任意): ページ指定またはセクション番号
+  - **物理ページ指定**:
+    - 単ページ: `5`
+    - 範囲: `10-25`
+    - カンマ区切り: `10,12,15`
+    - 混合: `10-15,20-25`
+  - **セクション番号指定**: `^\d+(\.\d+)+$` にマッチする文字列（例: `6.3`, `6.3.5`）
+    - PDFの本文見出しを自動検索し、物理ページ範囲を解決する
+  - **省略**: 省略された場合はユーザーに確認する
 - `output-filename` (任意): 出力ファイル名。省略時:
-  - キー指定の場合: `<key>_pp<pages>.pdf`（例: `dl-book_pp10-25.pdf`）
-  - パス直指定の場合: `extracted_pp<pages>.pdf`
+  - キー指定 + 物理ページ: `<key>_pp<pages>.pdf`（例: `dl-book_pp10-25.pdf`）
+  - キー指定 + セクション番号: `<key>_<section>.pdf`（ドットをハイフンに変換、例: `dl-book_6-3.pdf`）
+  - パス直指定 + 物理ページ: `extracted_pp<pages>.pdf`
+  - パス直指定 + セクション番号: `extracted_<section>.pdf`（ドットをハイフンに変換）
 - `--output-dir <dir>` (任意): 出力先ディレクトリ（絶対パスまたはプロジェクトルートからの相対パス）。省略時は `seminar_config.yml` の `pdf_output_dir`（未設定なら `pdfs`）
 
 以下の変数を定義する：
 - `SOURCE_PATH`: 解決済みの絶対パス
-- `PAGES_STR`: ページ指定文字列（そのまま）
+- `INPUT_MODE`: `"pages"` または `"section"`
+- `PAGES_STR`: ページ指定文字列（物理ページ指定時は即確定、セクション番号指定時は Step 1.5 で確定）
+- `SECTION_NUM`: セクション番号（セクション指定時のみ、例: `6.3`）
 - `OUTPUT_DIR`: 解決済みの出力ディレクトリパス
 - `OUTPUT_FILENAME`: 決定済みの出力ファイル名
 - `OUTPUT_PATH`: `<OUTPUT_DIR>/<OUTPUT_FILENAME>`
@@ -49,6 +57,26 @@ allowed-tools: [Read, Bash, Glob]
 ---
 
 ## Step 1: 引数解決
+
+### 1-0: pages-or-section の判定
+
+引数から `pages-or-section` の値を取り出す。
+
+- **省略されている場合**: 以下を表示してユーザーに入力を求め、受け取った値で処理を続ける：
+  ```
+  ページ指定が省略されています。以下のいずれかで指定してください:
+    - 物理ページ: 例 5, 10-25, 10,12,15
+    - セクション番号: 例 6.3, 6.3.5
+  ```
+
+- **`^\d+(\.\d+)+$` にマッチする場合（セクション番号）**:
+  - `INPUT_MODE = "section"`
+  - `SECTION_NUM = <入力値>`（例: `6.3`）
+  - `PAGES_STR` は未確定（Step 1.5 で確定する）
+
+- **それ以外の場合（物理ページ番号）**:
+  - `INPUT_MODE = "pages"`
+  - `PAGES_STR = <入力値>`（即確定）
 
 ### 1-a: ソースPDFパスの解決
 
@@ -76,8 +104,10 @@ allowed-tools: [Read, Bash, Glob]
 
 - `output-filename` が指定された場合: そのまま `OUTPUT_FILENAME` とする。
 - 省略された場合:
-  - キー指定なら: `<key>_pp<pages>.pdf`
-  - パス直指定なら: `extracted_pp<pages>.pdf`
+  - キー指定 + 物理ページ: `<key>_pp<PAGES_STR>.pdf`
+  - キー指定 + セクション番号: `<key>_<SECTION_NUM の . を - に置換>.pdf`（例: `dl-book_6-3.pdf`）
+  - パス直指定 + 物理ページ: `extracted_pp<PAGES_STR>.pdf`
+  - パス直指定 + セクション番号: `extracted_<SECTION_NUM の . を - に置換>.pdf`
 
 `OUTPUT_PATH = <OUTPUT_DIR>/<OUTPUT_FILENAME>` を確定する。
 
@@ -94,6 +124,28 @@ test -f "<SOURCE_PATH>"
 ```
 Error: ソースPDFが見つかりません: <SOURCE_PATH>
 ```
+
+---
+
+## Step 2.5: セクション番号の解決（セクション番号指定時のみ）
+
+`INPUT_MODE == "section"` の場合のみ実行する。
+
+```bash
+uv run --with pypdf .claude/skills/extract-pdf-pages/assets/resolve_section_pages.py \
+  "<SOURCE_PATH>" "<SECTION_NUM>"
+```
+
+- **exit 0 の場合**: stdout の出力（例: `204-212`）を `PAGES_STR` に設定し、以下を表示する：
+  ```
+  セクション <SECTION_NUM> → 物理ページ <PAGES_STR> に解決しました。
+  ```
+- **exit 非ゼロの場合**: スクリプトの stderr 出力をユーザーに表示し、さらに以下を出力して停止する：
+  ```
+  セクション番号を自動解決できませんでした。
+  物理ページ番号を直接指定して再試行してください:
+    /extract-pdf-pages <pdf-key-or-path> <pages> [output-filename]
+  ```
 
 ---
 
@@ -119,12 +171,26 @@ uv run --with pypdf .claude/skills/extract-pdf-pages/assets/extract_pages.py \
 
 ## Step 5: 完了メッセージ
 
+物理ページ指定の場合:
 ```
 ✅ PDFページ抽出完了
 
 ソース : <SOURCE_PATH>
 ページ : <PAGES_STR>
 出力   : <OUTPUT_PATH>
+
+次のステップ（例）:
+  /add-textbook-session <OUTPUT_PATH>
+```
+
+セクション番号指定の場合:
+```
+✅ PDFページ抽出完了
+
+ソース   : <SOURCE_PATH>
+セクション: <SECTION_NUM>
+ページ   : <PAGES_STR>（自動解決）
+出力     : <OUTPUT_PATH>
 
 次のステップ（例）:
   /add-textbook-session <OUTPUT_PATH>
