@@ -65,6 +65,7 @@ allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 
 ```bash
 mkdir -p docs/sessions/<SESSION_ID>/diagrams
+mkdir -p docs/sessions/<SESSION_ID>/images
 ```
 
 ---
@@ -84,13 +85,52 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
 **品質ガイドライン**:
 - Abstract を単に翻訳するのではなく、「なぜこの研究が必要か」を先行研究との対比で説明する
 - 提案手法の核心となる数式・アーキテクチャ図をMermaidで示す
+- 初学者がつまずきやすい箇所に、必要に応じて `<!-- image-slot: <image-id> -->` を最大3件まで挿入する
+- 画像スロットは、直感説明・数式の意味・提案手法の全体像・誤解しやすい比較の直後に置く
+- 生成画像は教育用の補助図に限定し、論文の厳密な数値結果・原図・実験表の再現には使わない
 - 実験結果は定量評価テーブルと「何がどのくらい改善されたか」の解釈を両方記載する
 - 限界・今後の課題も必ず記載する（批判的な視点を持つ）
 - 発表者の所感・議論点を末尾に記載する
 
 ---
 
-## Step 4: diagrams/architecture.mmd を生成
+## Step 4: image_prompts.yml を生成
+
+`docs/sessions/<SESSION_ID>/image_prompts.yml` を作成する。
+
+記事中に挿入した各 `image-slot` について、手動画像生成用のプロンプトを記載する。画像生成APIは使わない。プロンプトは、ユーザーが Gemini / Google AI Studio / nanobanana のチャット画面に貼り付けて使えるようにする。
+
+**スキーマ**:
+
+```yaml
+images:
+  - id: <image-id>
+    article: index.md
+    filename: images/<image-id>.png
+    alt: "<画像の代替テキスト>"
+    insert_after_heading: "<スロットを置いた見出し>"
+    purpose: "<この画像で理解しやすくしたいポイント>"
+    prompt: |
+      <画像生成用プロンプト>
+    notes: "<生成時の注意。文字崩れ・ラベル量・事実性など>"
+```
+
+**プロンプト作成ルール**:
+- 白背景または淡色背景の教材用図解を基本にする
+- 論文の主張を超える構造・数値・結果を描かない
+- 文字は最小限にし、文字崩れが起きる場合はラベルなしで生成して本文側で説明するよう `notes` に書く
+- 1つの画像は1つの理解ポイントだけを扱う
+- Mermaid で十分な構造図は画像化しない
+
+画像スロットを挿入しなかった場合も、次の空ファイルを作成する：
+
+```yaml
+images: []
+```
+
+---
+
+## Step 5: diagrams/architecture.mmd を生成
 
 `docs/sessions/<SESSION_ID>/diagrams/architecture.mmd` を作成する。
 
@@ -98,7 +138,7 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
 
 ---
 
-## Step 5: mkdocs.yml を更新
+## Step 6: mkdocs.yml を更新
 
 `mkdocs.yml` の `nav:` → `セッション:` 配下に1行追加する（フラットエントリ）。
 
@@ -110,7 +150,7 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
 
 ---
 
-## Step 6: docs/index.md を更新
+## Step 7: docs/index.md を更新
 
 `docs/index.md` のセッション一覧テーブルの末尾に1行追加する。
 
@@ -120,7 +160,7 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
 
 ---
 
-## Step 7: ビルド確認
+## Step 8: ビルド確認
 
 ```bash
 uv run mkdocs build --strict
@@ -139,6 +179,8 @@ uv run mkdocs build --strict
 生成：
   docs/sessions/<SESSION_ID>/index.md（論文紹介記事）
   docs/sessions/<SESSION_ID>/diagrams/architecture.mmd
+  docs/sessions/<SESSION_ID>/images/（生成画像の保存先）
+  docs/sessions/<SESSION_ID>/image_prompts.yml（手動画像生成用プロンプト）
 
 更新：
   mkdocs.yml（nav に追加）
@@ -147,4 +189,9 @@ uv run mkdocs build --strict
 確認：
   uv run mkdocs build --strict  ✅
   uv run mkdocs serve
+
+画像生成（任意）：
+  1. image_prompts.yml の prompt を Gemini / Google AI Studio / nanobanana に貼り付ける
+  2. 生成画像を filename のパスに保存する
+  3. /insert-generated-images <SESSION_ID> で本文へ埋め込む
 ```

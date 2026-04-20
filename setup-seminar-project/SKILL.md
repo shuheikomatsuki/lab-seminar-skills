@@ -10,6 +10,8 @@ allowed-tools: [Read, Write, Bash, Glob]
 MkDocs + Material テーマを使った勉強会まとめサイトのプロジェクトを初期化します。
 完了後すぐにセッション追加スキルを使える状態にします。
 
+画像生成APIキーや外部画像生成SDKは不要です。画像を使う場合も、スキルは `image_prompts.yml` と画像埋め込み導線だけを作り、実際の生成は Gemini / Google AI Studio / nanobanana などのチャット画面で手動実行します。
+
 ## 引数
 
 `$ARGUMENTS` を次の形式でパースしてください：
