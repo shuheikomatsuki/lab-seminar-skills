@@ -1,13 +1,13 @@
 ---
 name: add-paper-session
-description: Use this skill to add a new paper introduction session to the lab-seminars repository. Trigger when the user wants to create a new session from a research paper PDF, invokes /add-paper-session, mentions adding a 論文紹介 or 論文セッション, or wants to generate まとめ記事 and スライド from a research paper.
+description: Use this skill to add a new paper introduction session to the lab-seminars repository. Trigger when the user wants to create a new session from a research paper PDF, invokes /add-paper-session, mentions adding a 論文紹介 or 論文セッション, or wants to generate まとめ記事 from a research paper.
 argument-hint: "[slug] <pdf-path> [display-title] [YYYY-MM-DD]"
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 ---
 
 # add-paper-session
 
-論文PDFから論文紹介セッションを新規追加します。解説記事・Marpスライド・Mermaid図を生成し、サイトのナビゲーションも自動更新します。
+論文PDFから論文紹介セッションを新規追加します。解説記事・Mermaid図を生成し、サイトのナビゲーションも自動更新します。
 
 ---
 
@@ -87,23 +87,7 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
 
 ---
 
-## Step 4: slides.md を生成
-
-`docs/sessions/<SESSION_ID>/slides.md` を作成する。
-
-Marp形式のスライド（全体10〜15枚程度）。
-
-**スライド密度ガイドライン**:
-- 大きな display math（シグマ記号・分数・多段添字を含む `$$...$$`）が2つ以上あるスライドには、4行以上の表を置かない
-- 表が必要な場合は次のスライドに分ける、表を3行以内に収める、またはシンボル説明をインライン（`$記号$: 意味, ...` 形式）にまとめる
-
-**テンプレート**: `.claude/skills/add-paper-session/assets/slides_template.md` を Read し、frontmatter・構成を確認してから生成する。
-
-**発表者の挿入**: `config_presenter` が設定されている場合、`（担当者名）` プレースホルダーを `config_presenter` の値で置き換える。
-
----
-
-## Step 5: diagrams/architecture.mmd を生成
+## Step 4: diagrams/architecture.mmd を生成
 
 `docs/sessions/<SESSION_ID>/diagrams/architecture.mmd` を作成する。
 
@@ -111,7 +95,7 @@ Marp形式のスライド（全体10〜15枚程度）。
 
 ---
 
-## Step 6: mkdocs.yml を更新
+## Step 5: mkdocs.yml を更新
 
 `mkdocs.yml` の `nav:` → `セッション:` 配下に1行追加する（フラットエントリ）。
 
@@ -123,17 +107,17 @@ Marp形式のスライド（全体10〜15枚程度）。
 
 ---
 
-## Step 7: docs/index.md を更新
+## Step 6: docs/index.md を更新
 
 `docs/index.md` のセッション一覧テーブルの末尾に1行追加する。
 
 ```markdown
-| <date> | [<display-title>](sessions/<SESSION_ID>/index.md) | [スライド](sessions/<SESSION_ID>/slides.html) |
+| <date> | [<display-title>](sessions/<SESSION_ID>/index.md) |
 ```
 
 ---
 
-## Step 8: ビルド確認
+## Step 7: ビルド確認
 
 ```bash
 uv run mkdocs build --strict
@@ -151,7 +135,6 @@ uv run mkdocs build --strict
 
 生成：
   docs/sessions/<SESSION_ID>/index.md（論文紹介記事）
-  docs/sessions/<SESSION_ID>/slides.md
   docs/sessions/<SESSION_ID>/diagrams/architecture.mmd
 
 更新：

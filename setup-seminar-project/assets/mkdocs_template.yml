@@ -17,8 +17,7 @@ theme:
       primary: indigo
       accent: indigo
 
-# CI生成ファイル (slides.html, slides.pdf, *.png) へのリンクは
-# ローカルでは存在しないため警告を抑制する
+# CI生成ファイル (*.png) へのリンクはローカルでは存在しないため警告を抑制する
 validation:
   links:
     absolute_links: warn
@@ -26,10 +25,6 @@ validation:
     anchors: warn
   nav:
     omitted_files: ignore
-
-# Marpのソースファイルはnavに含めない
-not_in_nav: |
-  sessions/**/slides.md
 
 plugins:
   - search:

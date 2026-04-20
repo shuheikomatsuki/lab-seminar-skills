@@ -1,6 +1,6 @@
 ---
 name: add-textbook-session
-description: Use this skill to add a new textbook session to the lab-seminars repository. Trigger when the user wants to create a new session from a textbook PDF, invokes /add-textbook-session, mentions adding a 勉強会セッション or 輪講, or wants to generate まとめ記事 and スライド from a textbook chapter.
+description: Use this skill to add a new textbook session to the lab-seminars repository. Trigger when the user wants to create a new session from a textbook PDF, invokes /add-textbook-session, mentions adding a 勉強会セッション or 輪講, or wants to generate まとめ記事 from a textbook chapter.
 argument-hint: "[slug] <pdf-path> [display-title] [YYYY-MM-DD]  |  <session-id> <pdf-path> --sub <subsection-slug> [subsection-title] [presenter]"
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 ---
@@ -10,7 +10,7 @@ allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 教科書のPDFからセミナーセッションを追加します。**2つのモード**があります。
 
 **Mode 1 — 新規セッション作成:**
-サブセクション全体の概要ページ・Marpスライド・Mermaid図を生成し、サイトのナビゲーションに追加します。
+サブセクション全体の概要ページ・Mermaid図を生成し、サイトのナビゲーションに追加します。
 
 **Mode 2 — サブサブセクション深掘り記事追加:**
 既存セッションに、1人の担当者が担当するサブサブセクションの詳細記事を追加します。
@@ -101,27 +101,13 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
 - 全体の流れをMermaid図で示す（各サブサブセクションのキーコンセプト間の関係）
 - まとめテーブルには各サブサブセクションの1行要点を記載する
 
-### Step 4: slides.md を生成
-
-`docs/sessions/<SESSION_ID>/slides.md` を作成する。
-
-Marp形式のスライド（全体10〜15枚程度）。節全体をカバーし、各サブサブセクションを1〜3枚にまとめる。
-
-**スライド密度ガイドライン**:
-- 大きな display math（シグマ記号・分数・多段添字を含む `$$...$$`）が2つ以上あるスライドには、4行以上の表を置かない
-- 表が必要な場合は次のスライドに分ける、表を3行以内に収める、またはシンボル説明をインライン（`$記号$: 意味, ...` 形式）にまとめる
-
-**テンプレート**: `.claude/skills/add-textbook-session/assets/slides_template.md` を Read し、frontmatter・構成を確認してから生成する。
-
-**発表者の挿入**: `config_presenter` が設定されている場合、`（担当者名）` プレースホルダーを `config_presenter` の値で置き換える。
-
-### Step 5: diagrams/architecture.mmd を生成
+### Step 4: diagrams/architecture.mmd を生成
 
 `docs/sessions/<SESSION_ID>/diagrams/architecture.mmd` を作成する。
 
 節全体の概念構造・フロー・歴史的変遷などをMermaid図で示す。`index.md` 内のインライン図とは異なる視点・粒度で描く。
 
-### Step 6: mkdocs.yml を更新（Mode 1）
+### Step 5: mkdocs.yml を更新（Mode 1）
 
 `mkdocs.yml` の `nav:` → `セッション:` 配下に**ネスト構造のグループ**として追加する。
 
@@ -132,13 +118,13 @@ Marp形式のスライド（全体10〜15枚程度）。節全体をカバーし
 
 正確なインデント・フォーマットは `.claude/skills/add-textbook-session/references/session_format.md` を参照。
 
-### Step 7: docs/index.md を更新
+### Step 6: docs/index.md を更新
 
 `docs/index.md` のセッション一覧テーブルの末尾に1行追加する。
 
 テーブル行の形式は `.claude/skills/add-textbook-session/references/session_format.md` を参照。
 
-### Step 8: ビルド確認
+### Step 7: ビルド確認
 
 ```bash
 uv run mkdocs build --strict
@@ -154,7 +140,6 @@ uv run mkdocs build --strict
 
 生成：
   docs/sessions/<SESSION_ID>/index.md（概要ページ）
-  docs/sessions/<SESSION_ID>/slides.md
   docs/sessions/<SESSION_ID>/diagrams/architecture.mmd
 
 更新：

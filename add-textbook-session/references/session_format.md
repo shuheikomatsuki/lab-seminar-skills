@@ -66,21 +66,19 @@ new_string:  "      - 概要: sessions/<SESSION_ID>/index.md\n      - <subsectio
 
 ### テーブルの形式
 ```markdown
-| 日付 | タイトル | 発表資料 |
-|------|----------|----------|
-| 2026-04-18 | [DL Ch6.1 固定基底関数の限界](sessions/2026-04-18-dl-ch6-1/index.md) | [スライド](sessions/2026-04-18-dl-ch6-1/slides.html) |
-| <date> | [<display-title>](sessions/<SESSION_ID>/index.md) | [スライド](sessions/<SESSION_ID>/slides.html) |   ← ここに追加
+| 日付 | タイトル |
+|------|----------|
+| 2026-04-18 | [DL Ch6.1 固定基底関数の限界](sessions/2026-04-18-dl-ch6-1/index.md) |
+| <date> | [<display-title>](sessions/<SESSION_ID>/index.md) |   ← ここに追加
 ```
 
 ### ルール
-- 列数: 3列（日付・タイトル・発表資料）
+- 列数: 2列（日付・タイトル）
 - タイトル列: Markdownリンク `[<display-title>](sessions/<SESSION_ID>/index.md)`
-- 発表資料列: `[スライド](sessions/<SESSION_ID>/slides.html)`
-  - `slides.html` はCIで生成される（`slides.md` から Marp が生成）
 
 ### Edit ツール使用例
 既存の最後のテーブル行の後に追記する。
 ```
-old_string: "| 2026-04-26 | [DL Ch6.2 多層ネットワーク](sessions/2026-04-26-6-2/index.md) | [スライド](sessions/2026-04-26-6-2/slides.html) |"
-new_string:  "| 2026-04-26 | [DL Ch6.2 多層ネットワーク](sessions/2026-04-26-6-2/index.md) | [スライド](sessions/2026-04-26-6-2/slides.html) |\n| <date> | [<display-title>](sessions/<SESSION_ID>/index.md) | [スライド](sessions/<SESSION_ID>/slides.html) |"
+old_string: "| 2026-04-26 | [DL Ch6.2 多層ネットワーク](sessions/2026-04-26-6-2/index.md) |"
+new_string:  "| 2026-04-26 | [DL Ch6.2 多層ネットワーク](sessions/2026-04-26-6-2/index.md) |\n| <date> | [<display-title>](sessions/<SESSION_ID>/index.md) |"
 ```
