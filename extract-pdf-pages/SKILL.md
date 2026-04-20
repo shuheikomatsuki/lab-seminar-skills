@@ -43,6 +43,7 @@ allowed-tools: [Read, Bash, Glob]
 - `OUTPUT_DIR`: 解決済みの出力ディレクトリパス
 - `OUTPUT_FILENAME`: 決定済みの出力ファイル名
 - `OUTPUT_PATH`: `<OUTPUT_DIR>/<OUTPUT_FILENAME>`
+- `SKILL_SOURCE_DIR` = この `SKILL.md` が置かれている `extract-pdf-pages` ディレクトリ
 
 ---
 
@@ -132,7 +133,7 @@ Error: ソースPDFが見つかりません: <SOURCE_PATH>
 `INPUT_MODE == "section"` の場合のみ実行する。
 
 ```bash
-uv run --with pypdf .claude/skills/extract-pdf-pages/assets/resolve_section_pages.py \
+uv run --with pypdf "$SKILL_SOURCE_DIR/assets/resolve_section_pages.py" \
   "<SOURCE_PATH>" "<SECTION_NUM>"
 ```
 
@@ -170,7 +171,7 @@ mkdir -p "<OUTPUT_DIR>"
 ## Step 4: ページ抽出の実行
 
 ```bash
-uv run --with pypdf .claude/skills/extract-pdf-pages/assets/extract_pages.py \
+uv run --with pypdf "$SKILL_SOURCE_DIR/assets/extract_pages.py" \
   "<SOURCE_PATH>" "<PAGES_STR>" "<OUTPUT_PATH>"
 ```
 

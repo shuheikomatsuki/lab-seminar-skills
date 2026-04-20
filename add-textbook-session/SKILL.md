@@ -37,6 +37,7 @@ allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 変数を定義する：
 - `SESSION_ID = <date>-<slug>`
 - `SESSION_DIR = docs/sessions/<SESSION_ID>`
+- `SKILL_SOURCE_DIR` = この `SKILL.md` が置かれている `add-textbook-session` ディレクトリ
 
 ### Mode 2 の引数
 
@@ -54,6 +55,7 @@ allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 変数を定義する：
 - `SESSION_DIR = docs/sessions/<session-id>`
 - `SUB_FILE = docs/sessions/<session-id>/<subsection-slug>.md`
+- `SKILL_SOURCE_DIR` = この `SKILL.md` が置かれている `add-textbook-session` ディレクトリ
 
 ---
 
@@ -132,7 +134,7 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
 
 **目標**: 節全体の位置づけと構成を把握できる薄い概要ページ。詳細はサブサブセクション記事（Mode 2 で生成）に委ねる。
 
-**テンプレート**: まず `.claude/skills/add-textbook-session/assets/overview_template.md` を Read し、構造を把握してから生成する。各 `<!-- ... -->` プレースホルダーをPDFから読み取った実際の内容で置き換える。
+**テンプレート**: まず `$SKILL_SOURCE_DIR/assets/overview_template.md` を Read し、構造を把握してから生成する。各 `<!-- ... -->` プレースホルダーをPDFから読み取った実際の内容で置き換える。
 
 **発表者の挿入**: `config_presenter` が設定されている場合、`（担当者名）` プレースホルダーを `config_presenter` の値で置き換える。未設定の場合は `（担当者名）` のままにする。
 
@@ -156,13 +158,13 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
       - 概要: sessions/<SESSION_ID>/index.md
 ```
 
-正確なインデント・フォーマットは `.claude/skills/add-textbook-session/references/session_format.md` を参照。
+正確なインデント・フォーマットは `$SKILL_SOURCE_DIR/references/session_format.md` を参照。
 
 ### Step 6: docs/index.md を更新
 
 `docs/index.md` のセッション一覧テーブルの末尾に1行追加する。
 
-テーブル行の形式は `.claude/skills/add-textbook-session/references/session_format.md` を参照。
+テーブル行の形式は `$SKILL_SOURCE_DIR/references/session_format.md` を参照。
 
 ### Step 7: ビルド確認
 
@@ -216,7 +218,7 @@ uv run mkdocs build --strict
 
 **目標**: そのサブサブセクションを担当者が発表する際に参照できる、深く掘り下げた自己完結した解説記事。
 
-**テンプレート**: まず `.claude/skills/add-textbook-session/assets/index_template.md` を Read し、構造を把握してから生成する。
+**テンプレート**: まず `$SKILL_SOURCE_DIR/assets/index_template.md` を Read し、構造を把握してから生成する。
 
 **品質ガイドライン**:
 - 数式はステップバイステップで導出し、各ステップに直感的な説明を添える
@@ -235,7 +237,7 @@ uv run mkdocs build --strict
       - <subsection-title>: sessions/<session-id>/<subsection-slug>.md  ← ここに追加
 ```
 
-正確なインデント・Editパターンは `.claude/skills/add-textbook-session/references/session_format.md` を参照。
+正確なインデント・Editパターンは `$SKILL_SOURCE_DIR/references/session_format.md` を参照。
 
 ### Step 4: 概要ページの一覧テーブルを更新
 

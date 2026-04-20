@@ -29,6 +29,7 @@ allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 変数を定義する：
 - `SESSION_ID = <date>-<slug>`
 - `SESSION_DIR = docs/sessions/<SESSION_ID>`
+- `SKILL_SOURCE_DIR` = この `SKILL.md` が置かれている `add-paper-session` ディレクトリ
 
 ---
 
@@ -74,7 +75,7 @@ mkdir -p docs/sessions/<SESSION_ID>/diagrams
 
 **目標**: 論文を読んでいない人でも手法・実験・貢献を理解できる、自己完結した解説記事。
 
-**テンプレート**: まず `.claude/skills/add-paper-session/assets/index_template.md` を Read し、構造を把握してから生成する。各 `<!-- ... -->` プレースホルダーをPDFから読み取った実際の内容で置き換える。
+**テンプレート**: まず `$SKILL_SOURCE_DIR/assets/index_template.md` を Read し、構造を把握してから生成する。各 `<!-- ... -->` プレースホルダーをPDFから読み取った実際の内容で置き換える。
 
 **発表者の挿入**: `config_presenter` が設定されている場合、`（担当者名）` プレースホルダーを `config_presenter` の値で置き換える。未設定の場合は `（担当者名）` のままにする。
 
