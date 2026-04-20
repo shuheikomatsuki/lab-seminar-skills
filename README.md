@@ -29,9 +29,9 @@ git init
 そのうえで、使う実行環境に合わせて次の場所へ導入します。
 
 - Claude Code: プロジェクトルート直下の `.claude/skills`
-- Codex: プロジェクトルート直下の `.codex/skills`
+- Codex: プロジェクトルート直下の `.agents/skills`
 
-> **注意:** サブモジュール方式では `.claude/skills/` または `.codex/skills/` ディレクトリ全体がこのリポジトリに置き換わります。
+> **注意:** サブモジュール方式では `.claude/skills/` または `.agents/skills/` ディレクトリ全体がこのリポジトリに置き換わります。
 > 独自スキルをそのディレクトリに置いている場合は、先にこのリポジトリへ移動してください。
 > 独自スキルを別管理したい場合は、後述の **cp 方式** を使ってください。
 
@@ -49,23 +49,23 @@ git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .claude/
 #### Codex
 
 ```bash
-mkdir -p .codex
-git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .codex/skills
+mkdir -p .agents
+git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .agents/skills
 ```
 
 #### 両方使う場合
 
 ```bash
-mkdir -p .claude .codex
+mkdir -p .claude .agents
 git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .claude/skills
-git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .codex/skills
+git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .agents/skills
 ```
 
 #### サブモジュールの更新
 
 ```bash
 git submodule update --remote .claude/skills
-git submodule update --remote .codex/skills
+git submodule update --remote .agents/skills
 ```
 
 ### cp 方式（独自スキルと共存させたい場合）
@@ -90,13 +90,13 @@ cp -r /tmp/lab-seminar-skills/remove-session-page .claude/skills/
 
 ```bash
 git clone https://github.com/shuheikomatsuki/lab-seminar-skills /tmp/lab-seminar-skills
-mkdir -p .codex/skills
-cp -r /tmp/lab-seminar-skills/setup-seminar-project .codex/skills/
-cp -r /tmp/lab-seminar-skills/add-paper-session .codex/skills/
-cp -r /tmp/lab-seminar-skills/add-textbook-session .codex/skills/
-cp -r /tmp/lab-seminar-skills/extract-pdf-pages .codex/skills/
-cp -r /tmp/lab-seminar-skills/remove-session .codex/skills/
-cp -r /tmp/lab-seminar-skills/remove-session-page .codex/skills/
+mkdir -p .agents/skills
+cp -r /tmp/lab-seminar-skills/setup-seminar-project .agents/skills/
+cp -r /tmp/lab-seminar-skills/add-paper-session .agents/skills/
+cp -r /tmp/lab-seminar-skills/add-textbook-session .agents/skills/
+cp -r /tmp/lab-seminar-skills/extract-pdf-pages .agents/skills/
+cp -r /tmp/lab-seminar-skills/remove-session .agents/skills/
+cp -r /tmp/lab-seminar-skills/remove-session-page .agents/skills/
 ```
 
 #### 更新（Claude Code）
@@ -115,12 +115,12 @@ cp -r /tmp/lab-seminar-skills/remove-session-page .claude/skills/
 
 ```bash
 git -C /tmp/lab-seminar-skills pull
-cp -r /tmp/lab-seminar-skills/setup-seminar-project .codex/skills/
-cp -r /tmp/lab-seminar-skills/add-paper-session .codex/skills/
-cp -r /tmp/lab-seminar-skills/add-textbook-session .codex/skills/
-cp -r /tmp/lab-seminar-skills/extract-pdf-pages .codex/skills/
-cp -r /tmp/lab-seminar-skills/remove-session .codex/skills/
-cp -r /tmp/lab-seminar-skills/remove-session-page .codex/skills/
+cp -r /tmp/lab-seminar-skills/setup-seminar-project .agents/skills/
+cp -r /tmp/lab-seminar-skills/add-paper-session .agents/skills/
+cp -r /tmp/lab-seminar-skills/add-textbook-session .agents/skills/
+cp -r /tmp/lab-seminar-skills/extract-pdf-pages .agents/skills/
+cp -r /tmp/lab-seminar-skills/remove-session .agents/skills/
+cp -r /tmp/lab-seminar-skills/remove-session-page .agents/skills/
 ```
 
 ## 使い方
@@ -128,7 +128,7 @@ cp -r /tmp/lab-seminar-skills/remove-session-page .codex/skills/
 ### 0 から新しい勉強会サイトを作る流れ
 
 1. 空のプロジェクトディレクトリを作成し、その直下へ移動します。
-2. 上記のサブモジュール方式または cp 方式で、このスキル集を `.claude/skills` または `.codex/skills` に導入します。
+2. 上記のサブモジュール方式または cp 方式で、このスキル集を `.claude/skills` または `.agents/skills` に導入します。
 3. `/setup-seminar-project` を実行して MkDocs プロジェクトを初期化します。
 4. `uv run mkdocs serve` でローカルプレビューします。
 5. PDF を `pdfs/` に置くか、`seminar_config.yml` の `pdf_sources` に登録して、各セッション追加スキルを実行します。
@@ -139,8 +139,8 @@ Codex で新規作成する例:
 mkdir my-lab-seminars
 cd my-lab-seminars
 git init
-mkdir -p .codex
-git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .codex/skills
+mkdir -p .agents
+git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .agents/skills
 ```
 
 その後 Codex に以下を依頼します。
@@ -152,14 +152,14 @@ git submodule add https://github.com/shuheikomatsuki/lab-seminar-skills .codex/s
 ### 新規プロジェクトのセットアップ
 
 ```
-/setup-seminar-project <project-name> [description] [output-dir] [--skills-target .claude/skills|.codex/skills|both|none]
+/setup-seminar-project <project-name> [description] [output-dir] [--skills-target .claude/skills|.agents/skills|both|none]
 ```
 
 例:
 
 ```
 /setup-seminar-project 研究室勉強会 "深層学習輪講"
-/setup-seminar-project 研究室勉強会 "深層学習輪講" . --skills-target .codex/skills
+/setup-seminar-project 研究室勉強会 "深層学習輪講" . --skills-target .agents/skills
 ```
 
 `setup-seminar-project` は `pyproject.toml`、`mkdocs.yml`、`docs/index.md`、`docs/stylesheets/extra.css`、`.gitignore`、`pdfs/` を作成し、可能であれば `lab-seminar-skills` を指定先の skills ディレクトリへサブモジュール登録します。
