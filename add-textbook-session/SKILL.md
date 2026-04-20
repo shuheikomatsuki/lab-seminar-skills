@@ -69,6 +69,46 @@ Mode 1 で `date` 引数が省略されていた場合、`config_date` が設定
 
 ---
 
+## Step 0.5: PDFパスの存在確認
+
+`pdf-path` で指定されたファイルが存在するか確認する。
+
+**存在する場合:** Step 1 へ進む。
+
+**存在しない場合:**
+`seminar_config.yml` の `pdf_sources` が定義されていれば、各キーと `pdf-path` の文字列を照合する（キー名が `pdf-path` 文字列中に含まれるかをチェック）。
+
+- **一致するキーが見つかった場合:**
+
+  ```
+  Error: 指定されたPDFが見つかりません: <pdf-path>
+
+  seminar_config.yml に登録されたキー '<matching-key>' を使って先にページを抽出してください：
+
+    /extract-pdf-pages <matching-key> <pages> [output-filename]
+
+  例：
+    /extract-pdf-pages <matching-key> 1-30 chapter-intro.pdf
+  ```
+
+- **一致するキーが見つからない場合:**
+
+  ```
+  Error: 指定されたPDFが見つかりません: <pdf-path>
+
+  PDFファイルを配置するか、以下のコマンドで抽出してください：
+
+    /extract-pdf-pages /absolute/path/to/source.pdf <pages> [output-filename]
+
+  または seminar_config.yml に pdf_sources を登録してキーで呼び出せます：
+    pdf_sources:
+      my-book: /absolute/path/to/source.pdf
+  ```
+
+どちらの場合も処理を**中断**する。
+
+---
+
 ## Mode 1: 新規セッション作成
 
 ### Step 1: PDFを読み込む
