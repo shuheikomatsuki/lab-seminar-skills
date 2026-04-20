@@ -136,6 +136,16 @@ uv run --with pypdf .claude/skills/extract-pdf-pages/assets/resolve_section_page
   "<SOURCE_PATH>" "<SECTION_NUM>"
 ```
 
+このスクリプトは、`pdftotext` が利用できる場合は `pdftotext -layout` でPDF全体をテキスト化して高速に本文見出しを検索する。
+
+- 初回実行時は `.cache/pdf-text/` にテキストキャッシュとメタデータを作成する
+- 2回目以降はPDFの `size` / `mtime` が変わっていなければキャッシュを再利用する
+- 期待速度の目安:
+  - 初回: 数秒程度
+  - キャッシュ利用時: 概ね1秒未満
+- `pdftotext` は `poppler` に含まれる外部コマンドであり、未導入環境では自動的に `pypdf` ベースの従来方式へフォールバックする
+- 診断ログや警告は stderr に出力され、stdout にはページ範囲のみを出力する
+
 - **exit 0 の場合**: stdout の出力（例: `204-212`）を `PAGES_STR` に設定し、以下を表示する：
   ```
   セクション <SECTION_NUM> → 物理ページ <PAGES_STR> に解決しました。
