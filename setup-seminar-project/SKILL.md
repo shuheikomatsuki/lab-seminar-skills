@@ -1,6 +1,6 @@
 ---
 name: setup-seminar-project
-description: Use this skill to initialize a new MkDocs-based seminar documentation project from scratch. Trigger when the user invokes /setup-seminar-project, wants to create a new 勉強会サイト, or needs to set up the prerequisite project structure before using add-seminar-session.
+description: Use this skill to initialize a new MkDocs-based seminar documentation project from scratch. Trigger when the user invokes /setup-seminar-project, wants to create a new 勉強会サイト, or needs to set up the prerequisite project structure before using session-addition skills.
 argument-hint: <project-name> [description] [output-dir]
 allowed-tools: [Read, Write, Bash, Glob]
 ---
@@ -8,7 +8,7 @@ allowed-tools: [Read, Write, Bash, Glob]
 # setup-seminar-project
 
 MkDocs + Material テーマを使った勉強会まとめサイトのプロジェクトを初期化します。
-完了後すぐに `/add-seminar-session` でセッションを追加できる状態にします。
+完了後すぐにセッション追加スキルを使える状態にします。
 
 ## 引数
 
@@ -114,12 +114,13 @@ command -v uv >/dev/null 2>&1 && cd "$PROJECT_DIR" && uv sync
   docs/index.md
   docs/stylesheets/extra.css
   .gitignore
-  .claude/skills/add-seminar-session/
+  .claude/skills/
 
 次のステップ:
   1. cd <PROJECT_DIR>
   2. uv run mkdocs serve   → ローカルプレビュー (http://127.0.0.1:8000)
-  3. /add-seminar-session <slug> pdfs/your-paper.pdf [タイトル] [YYYY-MM-DD]
+  3. 論文紹介: /add-paper-session <slug> pdfs/your-paper.pdf [タイトル] [YYYY-MM-DD]
+     教科書:   /add-textbook-session <slug> pdfs/your-chapter.pdf [タイトル] [YYYY-MM-DD]
 ```
 
 `uv` が見つからなかった場合の追記：

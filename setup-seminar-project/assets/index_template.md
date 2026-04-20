@@ -13,8 +13,14 @@
 
 ## 使い方
 
-新しいセッションを追加するには `/add-seminar-session` スキルを使用してください：
+論文紹介セッションを追加するには `/add-paper-session` スキルを使用してください：
 
 ```
-/add-seminar-session <slug> pdfs/your-paper.pdf [タイトル] [YYYY-MM-DD]
+/add-paper-session <slug> pdfs/your-paper.pdf [タイトル] [YYYY-MM-DD]
+```
+
+教科書セッションを追加するには `/add-textbook-session` スキルを使用してください：
+
+```
+/add-textbook-session <slug> pdfs/your-chapter.pdf [タイトル] [YYYY-MM-DD]
 ```
