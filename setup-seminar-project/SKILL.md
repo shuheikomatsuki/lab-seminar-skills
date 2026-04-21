@@ -136,7 +136,8 @@ command -v uv >/dev/null 2>&1 && cd "$PROJECT_DIR" && uv sync
 次のステップ:
   1. cd <PROJECT_DIR>
   2. uv run mkdocs serve   → ローカルプレビュー (http://127.0.0.1:8000)
-  3. 論文紹介: /add-paper-session <slug> pdfs/your-paper.pdf [タイトル] [YYYY-MM-DD]
+  3. 公開する場合: /setup-github-pages-deploy
+  4. 論文紹介: /add-paper-session <slug> pdfs/your-paper.pdf [タイトル] [YYYY-MM-DD]
      教科書:   /add-textbook-session <slug> pdfs/your-chapter.pdf [タイトル] [YYYY-MM-DD]
 ```
 

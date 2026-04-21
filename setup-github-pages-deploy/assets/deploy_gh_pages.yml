@@ -1,0 +1,29 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [{{BRANCH}}]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+{{INSTALL_STEPS}}
+
+      - name: Build MkDocs site
+        run: {{BUILD_COMMAND}}
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          publish_branch: gh-pages
